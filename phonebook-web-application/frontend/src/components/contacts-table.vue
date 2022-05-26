@@ -49,11 +49,10 @@ const props = defineProps<{
 
 
 const deleteContact = (contactToDelete: Contact) =>
-    currentUser.value.contacts = currentUser.value.contacts.filter(contact => contact.contactId != contactToDelete.contactId)
+    currentUser.value.contacts = currentUser.value?.contacts?.filter(contact => contact.contactId != contactToDelete.contactId)
 
 const addNewContact = () => {
-  console.log("Add new Contact function invoked")
-  // TODO when the create contact dialog is created.
+  currentUser.value?.contacts?.push(<Contact>{})
 }
 
 const columns = [
@@ -78,7 +77,7 @@ const columns = [
   {
     name: 'address',
     label: 'Address',
-    field: (row: Contact) => `${row.address.street}, ${row.address.city}, ${row.address.zipCode}, ${row.address.country}`,
+    field: (row: Contact) => row.address ? `${row.address.street}, ${row.address.city}, ${row.address.zipCode}, ${row.address.country}` : '',
     align: 'left'
   },
   {
@@ -86,7 +85,7 @@ const columns = [
     label: 'Phone Numbers',
     field: (row: Contact) => {
       let result: string = ''
-      row.phoneNumbers.forEach(number => {
+      row.phoneNumbers?.forEach(number => {
         result = result + `${number.type} - ${number.phoneNumber}; `
       })
       return result;
