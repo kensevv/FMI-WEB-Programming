@@ -23,10 +23,10 @@ const contact3: Contact = {contactId: 43, address: addr3, email: undefined, name
 const contact4: Contact = {contactId: 44, address: addr4, email: undefined, name: "Evi", photo: undefined, phoneNumbers: [pNum4, pNum5]};
 const contact5: Contact = {contactId: 45, address: addr5, email: "george@gmail.com", name: "George", photo: undefined, phoneNumbers: [pNum6]};
 
-const usr1: User = {userId: 11, userName: "ivantoskov", contacts: [contact2, contact3, contact4]};
-const usr2: User = {userId: 12, userName: "kensevv", contacts: [contact1, contact3, contact4]};
-const usr3: User = {userId: 13, userName: "ivsmars", contacts: [contact2, contact1, contact4]};
-const usr4: User = {userId: 14, userName: "Ewssi", contacts: [contact2, contact3, contact1, contact5]};
-const usr5: User = {userId: 15, userName: "gosho", contacts: undefined};
+const usr1: User = {userId: 11, email: "ivantoskov@gmail.com", username: "ivantoskov", firstName: 'Ivan', lastName: 'Toskov', contacts: [contact2, contact3, contact4]};
+const usr2: User = {userId: 12, email: "kensevv@gmail.com", username: "kensevv", firstName: 'Kenan', lastName: 'Yusein', contacts: [contact1, contact3, contact4]};
+const usr3: User = {userId: 13, email: "ivsmars@gmail.com", username: "ivsmars", firstName: 'Ivo', lastName: 'Marinov', contacts: [contact2, contact1, contact4]};
+const usr4: User = {userId: 14, email: "Ewssi@gmail.com", username: "Ewssi", firstName: 'Evelina', lastName: 'Popova', contacts: [contact2, contact3, contact1, contact5]};
+const usr5: User = {userId: 15, email: "gosho@gmail.com", username: "gosho", firstName: 'Georgi', lastName: 'Petrov', contacts: undefined};
 
 export const mockedUsers: User[] = [usr1, usr2, usr3, usr4, usr5];

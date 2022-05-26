@@ -13,31 +13,31 @@
         </q-toolbar-title>
         <q-space/>
         <!--        MOCKED USER SETTINGS -->
-        <q-btn-dropdown label="USERNAME" flat icon="person">
+        <q-btn-dropdown :label="currentUser.username" flat icon="person">
           <div>
             <q-list>
               <q-item v-ripple>
                 <q-item-section>
                   <q-item-label caption>First name</q-item-label>
-                  <q-item-label class="user-detail"> Kenan</q-item-label>
+                  <q-item-label class="user-detail"> {{ currentUser.firstName }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item v-ripple>
                 <q-item-section>
                   <q-item-label caption>Last name</q-item-label>
-                  <q-item-label class="user-detail">Yusein</q-item-label>
+                  <q-item-label class="user-detail"> {{ currentUser.lastName }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item v-ripple>
                 <q-item-section>
                   <q-item-label caption>E-mail</q-item-label>
-                  <q-item-label class="user-detail">kensev2000@gmail.com</q-item-label>
+                  <q-item-label class="user-detail">{{ currentUser.email }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item v-ripple>
                 <q-item-section>
                   <q-item-label caption>Contacts count</q-item-label>
-                  <q-item-label class="user-detail">50</q-item-label>
+                  <q-item-label class="user-detail">{{ currentUser.contacts?.length }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -76,8 +76,9 @@
 <script lang="ts" setup>
 
 import HelloWorld from "../components/HelloWorld.vue";
+import {currentUser} from "../services/storage-service";
 
-const onLogoutClick = () => console.log("LOGGED OUT!")
+const onLogoutClick = () => currentUser.value = null
 
 </script>
 

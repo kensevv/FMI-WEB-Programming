@@ -1,9 +1,12 @@
-import { Contact } from "./Contact"
+import {Contact} from "./Contact"
 
 export interface User {
-    userId : number
-    userName : String
-    contacts? : Contact[]
+    userId: number
+    email: string
+    username: string
+    firstName: string
+    lastName: string
+    contacts?: Contact[]
 }
 
 
