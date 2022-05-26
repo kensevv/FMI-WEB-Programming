@@ -10,7 +10,7 @@ import Home from "./pages/Home.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import {currentUser} from "./services/storage-service";
 import {toRegister} from "./services/storage-service"
-import Registration from "./pages/Registration.vue";</script>
+import Registration from "./pages/RegistrationPage.vue";</script>
 
 <style scoped>
 </style>

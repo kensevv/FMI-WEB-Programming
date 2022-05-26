@@ -2,20 +2,20 @@
   <div class="bg-light-blue window-height window-width row justify-center items-center">
     <div class="column">
       <div class="row">
-        <h5 class="text-h5 text-white q-my-md">Phonebook - WEB FMI</h5>
+        <h4 class="text-h4 text-white q-my-md name">Phonebook</h4>
       </div>
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-form ref="registerForm" class="q-gutter-md" @submit="register()">
             <q-card-section>
-              <q-input square filled v-model="email" type="email" label="email"/>
+              <q-input square filled v-model="email" type="email" label="Email"/>
               <br>
                 <q-input
                     square
                     filled
                     v-model="firstName"
                     type="text"
-                    label="first name"
+                    label="First name"
                     :rules="[ val => val && val.length > 0 || 'Please enter first name']" />
               <br>
                 <q-input
@@ -23,7 +23,7 @@
                     filled
                     v-model="lastName"
                     type="text"
-                    label="last name"
+                    label="Last name"
                     :rules="[val => val && val.length > 0 || 'Please enter last name']" />
               <br>
                 <q-input
@@ -31,7 +31,7 @@
                     filled
                     v-model="username"
                     type="text"
-                    label="username"
+                    label="Username"
                     :rules="[ val => val && val.length > 3 || 'Please enter valid username (3 or more characters)']"
                      />
               <br>
@@ -40,7 +40,7 @@
                     filled
                     v-model="password"
                     type="password"
-                    label="password"
+                    label="Password"
                     :rules="[val => val && val.length > 6 || 'Password must 6 or more characters']" />
             </q-card-section>
             <q-card-actions class="q-px-md">
@@ -73,11 +73,9 @@ const password = ref('')
 
 const goToLogInPage = () => {
     toRegister.value=false;
-    console.log('login')
 }
 
 const register = () => {
-    console.log('submit')
     const newUser : User = {userId : Math.floor(Math.random() * 100000 + 100), email : email.value, username : username.value, firstName : firstName.value, lastName : lastName.value}
     mockedUsers.push(newUser)
     currentUser.value = newUser
@@ -91,5 +89,10 @@ span:hover {
 }
 .q-card {
   width: 360px;
+}
+
+.name {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

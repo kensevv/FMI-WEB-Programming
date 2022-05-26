@@ -2,7 +2,7 @@
   <div class="bg-light-blue window-height window-width row justify-center items-center">
     <div class="column">
       <div class="row">
-        <h5 class="text-white q-my-md">Phonebook - WEB FMI</h5>
+        <h4 class="text-h4 text-white q-my-md name">Phonebook</h4>
       </div>
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
@@ -45,7 +45,6 @@ const login = () => {
 
 const goToRegisterPage = () => {
     toRegister.value = true;
-    console.log('register')
 }
 
 </script>
