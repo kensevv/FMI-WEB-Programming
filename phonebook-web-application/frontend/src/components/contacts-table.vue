@@ -1,27 +1,40 @@
 <template>
   <q-page class="q-layout-padding">
-  <div class="row">
-    <div class="col-1"/>
-    <div class="col">
-      <q-table
-          :columns="columns"
-          :pagination="{rowsPerPage: 0}"
-          :rows="props.contacts"
-          dense
-          hide-pagination
-          style="height: fit-content"
-          title="Contacts"
-          virtual-scroll
-      >
-        <template v-slot:body-cell-photo="props">
-          <q-td>
-            <q-avatar color="primary" text-color="white" icon="person"/>
-          </q-td>
-        </template>
-      </q-table>
+    <div class="row">
+      <div class="col-1"/>
+      <div class="col">
+        <q-table
+            :columns="columns"
+            :pagination="{rowsPerPage: 0}"
+            :rows="props.contacts"
+            dense
+            hide-pagination
+            style="height: fit-content"
+            title="Contacts"
+            virtual-scroll
+        >
+          <template v-slot:body-cell-photo="props">
+            <q-td>
+              <q-avatar color="primary" text-color="white" icon="person"/>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-edit="props">
+            <q-td>
+              <q-btn color="negative"
+                     flat
+                     icon="delete"
+                     round
+                     size="s"
+                     @click="deleteContact(props.row)"/>
+            </q-td>
+          </template>
+          <template v-slot:top-right>
+            <q-btn color="secondary" icon="add_circle_outline" label="new" @click="addNewContact()"/>
+          </template>
+        </q-table>
+      </div>
+      <div class="col-1"/>
     </div>
-    <div class="col-1"/>
-  </div>
   </q-page>
 </template>
 
@@ -32,6 +45,15 @@ import {Address} from "../models/Address";
 const props = defineProps<{
   contacts: Contact[]
 }>()
+
+
+const deleteContact = (contactToDelete: Contact) => {
+  console.log("Contact delete function invoked")
+}
+
+const addNewContact = () => {
+  console.log("Add new Contact function invoked")
+}
 
 const columns = [
   {
