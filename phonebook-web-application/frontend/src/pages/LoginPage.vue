@@ -2,14 +2,14 @@
   <div class="bg-light-blue window-height window-width row justify-center items-center">
     <div class="column">
       <div class="row">
-        <h4 class="text-h4 text-white q-my-md name">Phonebook</h4>
+        <h4 class="text-h4 text-white q-my-md title">Phonebook</h4>
       </div>
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-form class="q-gutter-md" @submit="login()">
             <q-card-section>
-              <q-input square filled v-model="username" type="text" label="username"/>
-              <br>
+              <q-input square filled v-model="username" type="text" label="username"
+                       :rules="[ val => val && val.length > 3 || 'Please enter valid username (3 or more characters)']"/>
               <q-input square filled v-model="password" type="password" label="password"/>
             </q-card-section>
             <q-card-actions class="q-px-md">
@@ -17,7 +17,7 @@
             </q-card-actions>
             <div class="row q-pa-none">
               <q-item class="q-pr-none text-grey-6">Don't have an account?
-                <span clickable @click="goToRegisterPage()" class="text-primary q-pl-xs">Register</span>
+                <span @click="goToRegisterPage()" class="text-primary q-pl-xs">Register</span>
               </q-item>
             </div>
           </q-form>
@@ -43,17 +43,21 @@ const login = () => {
   }
 }
 
-const goToRegisterPage = () => {
-    toRegister.value = true;
-}
+const goToRegisterPage = () => toRegister.value = true
 
 </script>
 
-<style>
+<style scoped>
 span:hover {
   cursor: pointer;
 }
+
 .q-card {
   width: 360px;
+}
+
+.title {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
