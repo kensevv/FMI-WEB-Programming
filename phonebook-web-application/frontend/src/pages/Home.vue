@@ -56,7 +56,7 @@
     </q-header>
 
     <q-page-container>
-      <HelloWorld></HelloWorld>
+      <contacts-table :contacts="currentUser.contacts"/>
     </q-page-container>
 
     <q-footer elevated class="bg-grey-7 text-white">
@@ -75,8 +75,8 @@
 
 <script lang="ts" setup>
 
-import HelloWorld from "../components/HelloWorld.vue";
 import {currentUser} from "../services/storage-service";
+import ContactsTable from "../components/contacts-table.vue";
 
 const onLogoutClick = () => currentUser.value = null
 

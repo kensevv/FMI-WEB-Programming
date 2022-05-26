@@ -1,5 +1,5 @@
 export enum PhoneType {
-    Personal,
-    Work,
-    Home
+    Personal = "Personal",
+    Work = "Work",
+    Home = "Home"
 }
