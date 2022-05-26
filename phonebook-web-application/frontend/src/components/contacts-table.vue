@@ -41,18 +41,19 @@
 <script lang="ts" setup>
 import {Contact} from "../models/Contact";
 import {Address} from "../models/Address";
+import {currentUser} from "../services/storage-service";
 
 const props = defineProps<{
   contacts: Contact[]
 }>()
 
 
-const deleteContact = (contactToDelete: Contact) => {
-  console.log("Contact delete function invoked")
-}
+const deleteContact = (contactToDelete: Contact) =>
+    currentUser.value.contacts = currentUser.value.contacts.filter(contact => contact.contactId != contactToDelete.contactId)
 
 const addNewContact = () => {
   console.log("Add new Contact function invoked")
+  // TODO when the create contact dialog is created.
 }
 
 const columns = [
