@@ -42,17 +42,25 @@
 import {Contact} from "../models/Contact";
 import {Address} from "../models/Address";
 import {currentUser} from "../services/storage-service";
+import {useQuasar} from "quasar";
+import CreateNewContactDialog from "../dialogs/create-new-contact-dialog.vue";
+
+const quasar = useQuasar()
 
 const props = defineProps<{
   contacts: Contact[]
 }>()
 
-
 const deleteContact = (contactToDelete: Contact) =>
     currentUser.value.contacts = currentUser.value?.contacts?.filter(contact => contact.contactId != contactToDelete.contactId)
 
 const addNewContact = () => {
-  currentUser.value?.contacts?.push(<Contact>{})
+  quasar.dialog({
+    component: CreateNewContactDialog,
+  }).onOk(async (newContact: Contact) => {
+    currentUser.value.contacts.push(newContact)
+  })
+
 }
 
 const columns = [
