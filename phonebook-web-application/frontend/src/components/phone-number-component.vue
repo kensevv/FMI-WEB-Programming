@@ -13,14 +13,6 @@
     <div class="col q-pa-sm">
       <q-input v-model="phoneNumber.phoneNumber" dense filled label="Number"/>
     </div>
-    <div class="col-1" style="margin-top: 5px">
-      <q-btn color="negative"
-             flat
-             icon="delete"
-             round
-             size="s"
-             @click="deletePhone()"/>
-    </div>
   </div>
 </template>
 
@@ -34,9 +26,6 @@ const props = defineProps<{
   phoneNumber?: PhoneNumber,
 }>();
 
-const deletePhone = () => {
-
-}
 </script>
 
 <style scoped>

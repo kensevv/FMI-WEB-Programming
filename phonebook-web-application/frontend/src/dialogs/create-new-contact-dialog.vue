@@ -23,13 +23,33 @@
           <q-input v-model="contactItem.name" dense filled label="Name"/>
           <q-input v-model="contactItem.email" type="email" dense filled label="Email"/>
 
-          <div>Phone numbers:</div>
-          <div v-for="phoneNumber in contactItem.phoneNumbers">
-            <phone-number-component :phone-number="phoneNumber"></phone-number-component>
+          <div>Address:</div>
+          <div>
+            <q-input v-model="contactItem.address.country" dense filled label="Country"/>
+            <q-input v-model="contactItem.address.city" dense filled label="City"/>
+            <q-input v-model="contactItem.address.street" dense filled label="Street"/>
+            <q-input v-model="contactItem.address.zipCode" dense filled label="Zip Code"/>
           </div>
+
+          <div>Phone numbers:</div>
+
+          <div v-for="phoneNumber in contactItem.phoneNumbers">
+            <div class="row">
+              <div class="col">
+                <phone-number-component :phone-number="phoneNumber"/>
+              </div>
+              <div class="col-1" style="margin-top: 5px">
+                <q-btn color="negative"
+                       flat
+                       icon="delete"
+                       round
+                       size="s"
+                       @click="deletePhone(phoneNumber)"/>
+              </div>
+            </div>
+          </div>
+
           <q-btn color="secondary" icon="add_circle_outline" flat label="Add phone" @click="addNewPhoneNumber()"/>
-
-
           <q-card-actions align="right">
             <q-btn color="primary" label="Submit" type="update"/>
             <q-btn class="q-ml-sm" color="primary" flat label="Cancel" @click="onDialogCancel"/>
@@ -45,7 +65,7 @@ import {ref} from "vue";
 import {Contact} from "../models/Contact";
 import PhoneNumberComponent from "../components/phone-number-component.vue";
 import {Address} from "../models/Address";
-import {PhoneType} from "../models/PhoneType";
+import {PhoneNumber} from "../models/PhoneNumber";
 
 const {dialogRef, onDialogHide, onDialogOK, onDialogCancel} = useDialogPluginComponent()
 
@@ -60,6 +80,10 @@ const addNewPhoneNumber = () => {
 }
 
 const submit = async () => onDialogOK(contactItem.value)
+
+const deletePhone = (phoneNumber: PhoneNumber) => {
+
+}
 
 </script>
 <style scoped>
