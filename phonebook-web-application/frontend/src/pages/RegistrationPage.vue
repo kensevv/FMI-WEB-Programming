@@ -71,7 +71,7 @@ const goToLogInPage = () => toRegister.value = false
 
 const register = () => {
   const newUser: User = {
-    userId: Math.floor(Math.random() * 100000 + 100),
+    userUuid: Math.floor(Math.random() * 100000 + 100),
     email: email.value,
     username: username.value,
     firstName: firstName.value,
