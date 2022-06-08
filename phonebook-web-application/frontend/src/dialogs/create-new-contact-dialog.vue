@@ -82,15 +82,15 @@ const contactItem = ref<Contact>({
 const photoPreview = ref(null)
 watch(() => contactItem.value.photo, () => photoPreview.value = URL.createObjectURL(contactItem.value.photo))
 
-
+let id = 0
 const addNewPhoneNumber = () => {
-  contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberId: null, type: undefined})
+  contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberId: id++, type: undefined})
 }
 
 const submit = async () => onDialogOK(contactItem.value)
 
 const deletePhone = (phoneNumber: PhoneNumber) => {
-
+  contactItem.value.phoneNumbers = contactItem.value.phoneNumbers.filter(number => number.phoneNumberId != phoneNumber.phoneNumberId)
 }
 
 </script>
