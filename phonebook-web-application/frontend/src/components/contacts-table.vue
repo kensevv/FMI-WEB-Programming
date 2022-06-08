@@ -15,7 +15,8 @@
         >
           <template v-slot:body-cell-photo="props">
             <q-td>
-              <q-avatar color="primary" text-color="white" icon="person"/>
+              <img v-if="props.value" alt="Avatar" :src="getAvatarPreviw(props.value)" class="image-preview">
+              <q-avatar v-else color="primary" text-color="white" icon="person"/>
             </q-td>
           </template>
           <template v-slot:body-cell-edit="props">
@@ -42,17 +43,30 @@
 import {Contact} from "../models/Contact";
 import {Address} from "../models/Address";
 import {currentUser} from "../services/storage-service";
+import {useQuasar} from "quasar";
+import CreateNewContactDialog from "../dialogs/create-new-contact-dialog.vue";
+
+const quasar = useQuasar()
 
 const props = defineProps<{
   contacts: Contact[]
 }>()
 
-
 const deleteContact = (contactToDelete: Contact) =>
     currentUser.value.contacts = currentUser.value?.contacts?.filter(contact => contact.contactId != contactToDelete.contactId)
 
 const addNewContact = () => {
-  currentUser.value?.contacts?.push(<Contact>{})
+  quasar.dialog({
+    component: CreateNewContactDialog,
+  }).onOk(async (newContact: Contact) => {
+    currentUser.value.contacts.push(newContact)
+  })
+
+}
+
+const getAvatarPreviw = (photo: File) => {
+  console.log(photo);
+  return URL.createObjectURL(photo);
 }
 
 const columns = [
@@ -97,5 +111,9 @@ const columns = [
 </script>
 
 <style scoped>
-
+.image-preview {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
 </style>
