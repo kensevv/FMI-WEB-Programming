@@ -6,12 +6,17 @@
                 dense
                 filled
                 label="Phone Type"
-                :rules="[ val => val !== null || 'Required']"
                 options-dense>
       </q-select>
     </div>
     <div class="col q-pa-sm">
-      <q-input v-model="phoneNumber.phoneNumber" dense filled label="Number"/>
+      <q-input
+          filled
+          v-model="phoneNumber.phoneNumber"
+          label="Phone"
+          mask="(+###) ### - ### - ###"
+          fill-mask
+      />
     </div>
   </div>
 </template>

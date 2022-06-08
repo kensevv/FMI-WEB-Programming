@@ -15,7 +15,8 @@
         >
           <template v-slot:body-cell-photo="props">
             <q-td>
-              <q-avatar color="primary" text-color="white" icon="person"/>
+              <img v-if="props.value" alt="Avatar" :src="getAvatarPreviw(props.value)" class="image-preview">
+              <q-avatar v-else color="primary" text-color="white" icon="person"/>
             </q-td>
           </template>
           <template v-slot:body-cell-edit="props">
@@ -63,6 +64,11 @@ const addNewContact = () => {
 
 }
 
+const getAvatarPreviw = (photo: File) => {
+  console.log(photo);
+  return URL.createObjectURL(photo);
+}
+
 const columns = [
   {
     name: 'photo',
@@ -105,5 +111,9 @@ const columns = [
 </script>
 
 <style scoped>
-
+.image-preview {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
 </style>

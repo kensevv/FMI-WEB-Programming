@@ -7,16 +7,20 @@
       </q-card-section>
       <q-card-section>
         <q-form class="q-gutter-md" @submit="submit">
-          <q-file filled bottom-slots v-model="model" label="Photo" counter max-files="12">
+
+          <q-file accept=".jpg, image/*" filled bottom-slots v-model="contactItem.photo" label="Photo" counter
+                  max-files="1">
             <template v-slot:before>
-              <q-icon name="person" size="lg"></q-icon>
+              <q-icon v-if="!contactItem.photo" name="person" size="lg"></q-icon>
+              <img v-else alt="Avatar" :src="photoPreview" class="image-preview">
             </template>
             <template v-slot:append>
-              <q-icon v-if="model !== null" name="close" @click.stop="model = null" class="cursor-pointer"/>
+              <q-icon v-if="contactItem.photo !== null" name="close" @click.stop="contactItem.photo = null"
+                      class="cursor-pointer"/>
               <q-icon name="create_new_folder" @click.stop/>
             </template>
             <template v-slot:hint>
-              Pick a photo for the new contact
+              .jpg, image/*
             </template>
           </q-file>
 
@@ -61,7 +65,7 @@
 </template>
 <script lang="ts" setup>
 import {useDialogPluginComponent} from 'quasar'
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {Contact} from "../models/Contact";
 import PhoneNumberComponent from "../components/phone-number-component.vue";
 import {Address} from "../models/Address";
@@ -75,6 +79,10 @@ const contactItem = ref<Contact>({
   address: <Address>{}, contactId: undefined, email: "", name: "", phoneNumbers: [], photo: undefined
 })
 
+const photoPreview = ref(null)
+watch(() => contactItem.value.photo, () => photoPreview.value = URL.createObjectURL(contactItem.value.photo))
+
+
 const addNewPhoneNumber = () => {
   contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberId: null, type: undefined})
 }
@@ -87,6 +95,14 @@ const deletePhone = (phoneNumber: PhoneNumber) => {
 
 </script>
 <style scoped>
+
+.image-preview {
+  margin-top: 20px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}
+
 .dialog-header {
   display: flex;
   justify-content: space-between;
