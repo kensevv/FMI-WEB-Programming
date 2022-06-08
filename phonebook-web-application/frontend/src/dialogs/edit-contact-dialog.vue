@@ -56,7 +56,7 @@
           <q-btn color="secondary" icon="add_circle_outline" flat label="Add phone" @click="addNewPhoneNumber()"/>
           <q-card-actions align="right">
             <q-btn color="primary" label="Submit" type="update"/>
-            <q-btn class="q-ml-sm" color="primary" flat label="Cancel" @click="onDialogCancel"/>
+            <q-btn class="q-ml-sm" color="primary" flat label="Reset" @click="resetItem()"/>
           </q-card-actions>
         </q-form>
       </q-card-section>
@@ -68,19 +68,25 @@ import {useDialogPluginComponent} from 'quasar'
 import {ref, watch} from "vue";
 import {Contact} from "../models/Contact";
 import PhoneNumberComponent from "../components/phone-number-component.vue";
-import {Address} from "../models/Address";
 import {PhoneNumber} from "../models/PhoneNumber";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from "uuid";
 
 const {dialogRef, onDialogHide, onDialogOK, onDialogCancel} = useDialogPluginComponent()
 
 defineEmits([...useDialogPluginComponent.emits])
 
-const contactItem = ref<Contact>({
-  address: <Address>{}, contactUuId: uuidv4().toString(), email: "", name: "", phoneNumbers: [], photo: undefined
-})
+const props = defineProps<{
+  contact: Contact,
+}>();
+
+const contactItem = ref<Contact>({...props.contact})
 
 const photoPreview = ref(null)
+
+if (contactItem.value.photo) {
+  photoPreview.value = URL.createObjectURL(contactItem.value.photo)
+}
+
 watch(() => contactItem.value.photo, () => photoPreview.value = URL.createObjectURL(contactItem.value.photo))
 
 const addNewPhoneNumber = () => {
@@ -91,6 +97,10 @@ const submit = async () => onDialogOK(contactItem.value)
 
 const deletePhone = (phoneNumber: PhoneNumber) => {
   contactItem.value.phoneNumbers = contactItem.value.phoneNumbers.filter(number => number.phoneNumberUuId != phoneNumber.phoneNumberUuId)
+}
+
+const resetItem = () => {
+  contactItem.value = props.contact;
 }
 
 </script>
