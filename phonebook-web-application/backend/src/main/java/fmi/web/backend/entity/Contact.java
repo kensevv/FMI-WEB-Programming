@@ -24,7 +24,7 @@ public class Contact {
     private List<PhoneNumber> phoneNumbers;
 
     @ManyToOne
-    @JoinColumn(name = "user_uu_id")
+    @JoinColumn(name = "user_uuid")
     private User user;
 
     // setters and getters

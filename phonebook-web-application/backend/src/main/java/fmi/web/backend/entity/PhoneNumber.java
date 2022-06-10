@@ -14,7 +14,7 @@ public class PhoneNumber {
     private PhoneType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_uu_id")
+    @JoinColumn(name = "contact_uuid")
     private Contact contact;
 
     //setters and getters
