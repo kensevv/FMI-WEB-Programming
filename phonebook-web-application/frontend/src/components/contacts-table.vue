@@ -113,7 +113,7 @@ const props = defineProps<{
 }>()
 
 const deleteContact = (contactToDelete: Contact) =>
-    currentUser.value.contacts = currentUser.value?.contacts?.filter(contact => contact.contactUuId != contactToDelete.contactUuId)
+    currentUser.value.contacts = currentUser.value?.contacts?.filter(contact => contact.contactUuid != contactToDelete.contactUuid)
 
 const addNewContact = () => {
   quasar.dialog({
@@ -131,7 +131,7 @@ const editContact = (contactToEdit: Contact) => {
     }
   }).onOk(async (editedContact: Contact) => {
     currentUser.value.contacts = currentUser.value.contacts.map(contact => {
-      if (contact.contactUuId == editedContact.contactUuId) {
+      if (contact.contactUuid == editedContact.contactUuid) {
         return editedContact
       } else {
         return contact
