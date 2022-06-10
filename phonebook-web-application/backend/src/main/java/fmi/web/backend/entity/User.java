@@ -1,18 +1,16 @@
 package fmi.web.backend.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "PhoneBookUser")
 public class User {
     @Id
-    private String userUuId;
+    private String userUuid;
 
-    private String userName;
+    private String username;
 
     private String password;
 
@@ -22,7 +20,6 @@ public class User {
 
     private String lastName;
 
-    @OneToMany
-    @JoinColumn(name = "contacts")
+    @OneToMany(mappedBy = "user")
     private List<Contact> contactList;
 }

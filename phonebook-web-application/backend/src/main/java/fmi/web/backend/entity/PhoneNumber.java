@@ -14,7 +14,7 @@ public class PhoneNumber {
     private PhoneType type;
 
     @ManyToOne
-    @JoinColumn(name = "contactUuId")
+    @JoinColumn(name = "contact_uu_id")
     private Contact contact;
 
 }
