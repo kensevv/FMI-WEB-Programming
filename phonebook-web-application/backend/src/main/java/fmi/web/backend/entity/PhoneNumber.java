@@ -1,19 +1,20 @@
 package fmi.web.backend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class PhoneNumber {
 
     @Id
-    private String addressUuId;
+    private String phoneNumberUuId;
 
     private String phoneNumber;
 
     @Enumerated(EnumType.ORDINAL)
     private PhoneType type;
+
+    @ManyToOne
+    @JoinColumn(name = "contactUuId")
+    private Contact contact;
 
 }

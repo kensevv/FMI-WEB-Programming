@@ -1,8 +1,6 @@
 package fmi.web.backend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Blob;
 import java.util.List;
 
@@ -12,7 +10,6 @@ public class Contact {
     @Id
     private String contactUuId;
 
-
     private Address address;
 
     private String email;
@@ -21,7 +18,7 @@ public class Contact {
 
     private Blob photo;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "contact")
     private List<PhoneNumber> phoneNumbers;
 
 }
