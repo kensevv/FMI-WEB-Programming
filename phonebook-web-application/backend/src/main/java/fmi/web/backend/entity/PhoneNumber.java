@@ -5,49 +5,61 @@ import javax.persistence.*;
 @Entity
 public class PhoneNumber {
 
-    @Id
-    private String phoneNumberUuid;
+	@Id
+	private String phoneNumberUuid;
 
-    private String phoneNumber;
+	private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    private PhoneType type;
+	@Enumerated(EnumType.STRING)
+	private PhoneType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_uuid")
-    private Contact contact;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "contact_uuid")
+	private Contact contact;
 
-    //setters and getters
-    public String getPhoneNumberUuid() {
-        return phoneNumberUuid;
-    }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public PhoneNumber() {
 
-    public PhoneType getType() {
-        return type;
-    }
+	}
 
-    public Contact getContact() {
-        return contact;
-    }
+	public PhoneNumber(String phoneNumberUuid, String phoneNumber, PhoneType type, Contact contact) {
+		this.phoneNumberUuid = phoneNumberUuid;
+		this.phoneNumber = phoneNumber;
+		this.type = type;
+		this.contact = contact;
+	}
 
-    public void setPhoneNumberUuid(String phoneNumberUuid) {
-        this.phoneNumberUuid = phoneNumberUuid;
-    }
+	//setters and getters
+	public String getPhoneNumberUuid() {
+		return phoneNumberUuid;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public void setPhoneNumberUuid(String phoneNumberUuid) {
+		this.phoneNumberUuid = phoneNumberUuid;
+	}
 
-    public void setType(PhoneType type) {
-        this.type = type;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public PhoneType getType() {
+		return type;
+	}
+
+	public void setType(PhoneType type) {
+		this.type = type;
+	}
+
+	public Contact getContact() {
+		return contact;
+	}
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
 
 }

@@ -6,56 +6,69 @@ import javax.persistence.Id;
 @Entity
 public class Address {
 
-    @Id
-    private String addressUuid;
+	@Id
+	private String addressUuid;
 
-    private String country;
+	private String country;
 
-    private String city;
+	private String city;
 
-    private String zipCode;
+	private String zipCode;
 
-    private String street;
+	private String street;
 
-    //setters and getters
-    public String getAddressUuid() {
-        return addressUuid;
-    }
 
-    public String getCountry() {
-        return country;
-    }
+	public Address() {
 
-    public String getCity() {
-        return city;
-    }
+	}
 
-    public String getZipCode() {
-        return zipCode;
-    }
+	public Address(String addressUuid, String country, String city, String zipCode, String street) {
+		this.addressUuid = addressUuid;
+		this.country = country;
+		this.city = city;
+		this.zipCode = zipCode;
+		this.street = street;
+	}
 
-    public String getStreet() {
-        return street;
-    }
+	//setters and getters
+	public String getAddressUuid() {
+		return addressUuid;
+	}
 
-    public void setAddressUuid(String addressUuid) {
-        this.addressUuid = addressUuid;
-    }
+	public void setAddressUuid(String addressUuid) {
+		this.addressUuid = addressUuid;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public String getCountry() {
+		return country;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
 
 }

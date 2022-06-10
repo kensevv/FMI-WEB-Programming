@@ -7,81 +7,95 @@ import java.util.List;
 @Entity
 public class Contact {
 
-    @Id
-    private String contactUuid;
+	@Id
+	private String contactUuid;
 
-    @ManyToOne
-    private Address address;
+	@ManyToOne
+	private Address address;
 
-    private String email;
+	private String email;
 
-    private String name;
+	private String name;
 
-    @javax.persistence.Lob
-    private Blob photo;
+	@Lob
+	private Blob photo;
 
-    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
-    private List<PhoneNumber> phoneNumbers;
+	@OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+	private List<PhoneNumber> phoneNumbers;
 
-    @ManyToOne
-    @JoinColumn(name = "user_uuid")
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_uuid")
+	private User user;
 
-    // setters and getters
-    public String getContactUuid() {
-        return contactUuid;
-    }
+	public Contact() {
 
-    public Address getAddress() {
-        return address;
-    }
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public Contact(String contactUuid, Address address, String email, String name, Blob photo, List<PhoneNumber> phoneNumbers, User user) {
+		this.contactUuid = contactUuid;
+		this.address = address;
+		this.email = email;
+		this.name = name;
+		this.photo = photo;
+		this.phoneNumbers = phoneNumbers;
+		this.user = user;
+	}
 
-    public String getName() {
-        return name;
-    }
+	// setters and getters
+	public String getContactUuid() {
+		return contactUuid;
+	}
 
-    public Blob getPhoto() {
-        return photo;
-    }
+	public void setContactUuid(String contactUuid) {
+		this.contactUuid = contactUuid;
+	}
 
-    public List<PhoneNumber> getPhoneNumbers() {
-        return phoneNumbers;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public void setContactUuid(String contactUuid) {
-        this.contactUuid = contactUuid;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setPhoto(Blob photo) {
-        this.photo = photo;
-    }
+	public Blob getPhoto() {
+		return photo;
+	}
 
-    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-    }
+	public void setPhoto(Blob photo) {
+		this.photo = photo;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public List<PhoneNumber> getPhoneNumbers() {
+		return phoneNumbers;
+	}
+
+	public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }
