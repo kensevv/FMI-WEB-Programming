@@ -3,11 +3,14 @@ package fmi.web.backend.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class User {
     @Id
-    private String uuid;
+    private String userUuId;
 
     private String userName;
 
@@ -19,5 +22,7 @@ public class User {
 
     private String lastName;
 
-
+    @OneToMany
+    @JoinColumn(name = "contacts")
+    private List<Contact> contactList;
 }
