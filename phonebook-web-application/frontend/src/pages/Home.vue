@@ -75,10 +75,11 @@
 
 <script lang="ts" setup>
 
-import {currentUser} from "../services/storage-service";
+import {clearUserStorage, currentUser} from "../services/storage-service";
 import ContactsTable from "../components/contacts-table.vue";
+import {logoutUser} from "../services/request-service";
 
-const onLogoutClick = () => currentUser.value = null
+const onLogoutClick = async () => await logoutUser().finally(() => clearUserStorage())
 
 </script>
 

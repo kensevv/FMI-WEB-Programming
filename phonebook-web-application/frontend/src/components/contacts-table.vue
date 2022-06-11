@@ -119,6 +119,9 @@ const addNewContact = () => {
   quasar.dialog({
     component: CreateNewContactDialog,
   }).onOk(async (newContact: Contact) => {
+    if(!currentUser.value.contacts) {
+      currentUser.value.contacts = []
+    }
     currentUser.value.contacts.push(newContact)
   })
 

@@ -20,7 +20,7 @@ public class Contact {
 	@Lob
 	private Blob photo;
 
-	@OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "contact")
 	private List<PhoneNumber> phoneNumbers;
 
 	@ManyToOne
