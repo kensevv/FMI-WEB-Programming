@@ -1,15 +1,16 @@
 package fmi.web.backend.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "phonebook_user")
+@NamedQuery(name = User.getUserByUsername, query = "SELECT u FROM User u WHERE u.username = :username")
+@NamedQuery(name = User.getUserByEmail, query = "SELECT u FROM User u WHERE u.email = :email")
 public class User {
+	public static final String getUserByUsername = "getUserByUsername";
+	public static final String getUserByEmail = "getUserByEmail";
 
 	@Id
 	private String userUuid;
@@ -24,7 +25,7 @@ public class User {
 
 	private String lastName;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Contact> contactList;
 
 	public User() {

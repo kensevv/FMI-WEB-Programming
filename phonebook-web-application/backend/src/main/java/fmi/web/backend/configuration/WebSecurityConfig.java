@@ -27,8 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class).sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().antMatchers("/login")
-				.permitAll().anyRequest().authenticated();
+		http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class)
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and().csrf().disable().cors().disable()
+				.authorizeRequests()
+				.antMatchers("/auth/**").permitAll()
+				.anyRequest().authenticated();
 	}
 }

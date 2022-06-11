@@ -1,7 +1,5 @@
 package fmi.web.backend.security;
 
-import fmi.web.backend.model.AuthStatus;
-import fmi.web.backend.model.UserAuthToken;
 import fmi.web.backend.services.BasicService;
 import fmi.web.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,6 @@ import java.util.Base64;
 
 @Service
 public class MyTokenService extends BasicService {
-	@Autowired
-	private UserService userService;
 
 	private static final String SECURE_KEY = "KenanSecurity";
 	private static final String SPLITTER = "&@";
@@ -34,25 +30,7 @@ public class MyTokenService extends BasicService {
 	}
 
 	public boolean validateToken(String token) {
-		if (StringUtils.hasText(token) && token.startsWith(SECURE_KEY)) {
-			if (extractExpirationDate(token).isAfter(LocalDateTime.now()) && tokenExistsInDb(token)) {
-				return true;
-			} else {
-				setTokenExpired(token);
-			}
-		}
-		return false;
-	}
-
-	private boolean tokenExistsInDb(String token) {
-		return em.find(UserAuthToken.class, encryptToken(token)) != null;
-	}
-
-	private void setTokenExpired(String token) {
-		UserAuthToken auth = em.find(UserAuthToken.class, encryptToken(token));
-		if (null != auth) {
-			auth.setStatus(AuthStatus.EXPIRED);
-		}
+		return StringUtils.hasText(token) && token.startsWith(SECURE_KEY) && extractExpirationDate(token).isAfter(LocalDateTime.now());
 	}
 
 	public String extractUsernameFromToken(String token) {
@@ -80,9 +58,4 @@ public class MyTokenService extends BasicService {
 		return encryptToken(token).equals(encodedToken);
 	}
 
-	public void persistToken(String token) {
-		UserAuthToken userAuthToken = new UserAuthToken(encryptToken(token),
-				userService.getUserByUsername(extractUsernameFromToken(token)), extractExpirationDate(token), LocalDateTime.now(), AuthStatus.VALID);
-		em.persist(userAuthToken);
-	}
 }

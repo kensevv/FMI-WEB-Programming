@@ -13,7 +13,7 @@ public class PhoneNumber {
 	@Enumerated(EnumType.STRING)
 	private PhoneType type;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "contact_uuid")
 	private Contact contact;
 

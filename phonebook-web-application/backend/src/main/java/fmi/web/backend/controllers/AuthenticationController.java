@@ -1,9 +1,12 @@
 package fmi.web.backend.controllers;
 
+import fmi.web.backend.entity.User;
 import fmi.web.backend.payload.LoginRequest;
+import fmi.web.backend.payload.SignupRequest;
 import fmi.web.backend.security.MyTokenService;
 import fmi.web.backend.security.UserDetailsImpl;
 import fmi.web.backend.security.UserDetailsServiceImpl;
+import fmi.web.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,54 +14,81 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
+import java.util.Objects;
+import java.util.UUID;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthenticationController {
 	@Autowired
-	protected BCryptPasswordEncoder passEncoder;
+	private BCryptPasswordEncoder passEncoder;
 	@Autowired
-	protected MyTokenService tokenService;
+	private MyTokenService tokenService;
 	@Autowired
-	protected UserDetailsServiceImpl userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
-	@GetMapping("/login")
-	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws ParseException {
-
-		String myToken;
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
 		UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
 
-		if (null != userDetails) {
+		if (Objects.nonNull(userDetails)) {
 			if (passEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
 
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-				myToken = tokenService.generateToken(loginRequest.getUsername());
-				tokenService.persistToken(myToken);
+				String myToken = tokenService.generateToken(loginRequest.getUsername());
 
 				HttpHeaders authorizationHeader = new HttpHeaders();
 				authorizationHeader.set("Authorization", myToken);
-				return new ResponseEntity<>(authorizationHeader, HttpStatus.OK);
+				return ResponseEntity.status(HttpStatus.OK).headers(authorizationHeader).body(userDetails.getUser());
 			} else {
-				return new ResponseEntity<>("Wrong credentials", HttpStatus.BAD_REQUEST);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong password");
 			}
 		}
-		return new ResponseEntity<>("Account DISABLED", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("User doesn't exist!", HttpStatus.BAD_REQUEST);
 	}
 
-	/*
-	 * @PostMapping("/register") public ResponseEntity<?> register(@RequestParam
-	 * String email, @RequestParam String username,
-	 *
-	 * @RequestParam String password) {
-	 *
-	 * }
-	 */
+	@GetMapping("/logout")
+	public void logout() {
+		SecurityContextHolder.clearContext();
+	}
+
+
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@RequestBody SignupRequest registerRequest) {
+		if (userService.getUserByUsername(registerRequest.getUsername()) != null) {
+			return ResponseEntity
+					.badRequest()
+					.body("Error: Username is already taken!");
+		}
+
+		if (userService.getUserByEmail(registerRequest.getEmail()) != null) {
+			return ResponseEntity
+					.badRequest()
+					.body("Error: Email is already in use!");
+		}
+
+		// Create new user's account
+		User newUser = new User(
+				UUID.randomUUID().toString(),
+				registerRequest.getUsername(),
+				passwordEncoder.encode(registerRequest.getPassword()),
+				registerRequest.getEmail(),
+				registerRequest.getFirstName(),
+				registerRequest.getLastName(),
+				null
+		);
+		userService.createUser(newUser);
+
+		return ResponseEntity.ok("User registered successfully!");
+	}
 
 }
