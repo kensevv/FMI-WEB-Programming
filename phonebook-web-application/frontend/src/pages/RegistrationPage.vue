@@ -43,7 +43,7 @@
               <div class="text-negative">{{ errorText }}</div>
             </q-card-section>
             <q-card-actions class="q-px-md">
-              <q-btn :disable="responseText !== ''" gtype="submit" unelevated color="light-green-7" size="lg" class="full-width" label="Register"/>
+              <q-btn :disable="responseText !== ''" type="submit" unelevated color="light-green-7" size="lg" class="full-width" label="Register"/>
             </q-card-actions>
             <div class="row q-pa-none">
               <q-item class="q-pr-none text-grey-6">Already have an account?

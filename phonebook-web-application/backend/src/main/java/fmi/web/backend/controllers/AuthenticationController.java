@@ -4,8 +4,6 @@ import fmi.web.backend.entity.User;
 import fmi.web.backend.payload.LoginRequest;
 import fmi.web.backend.payload.SignupRequest;
 import fmi.web.backend.security.MyTokenService;
-import fmi.web.backend.security.UserDetailsImpl;
-import fmi.web.backend.security.UserDetailsServiceImpl;
 import fmi.web.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,8 +25,6 @@ public class AuthenticationController {
 	@Autowired
 	private MyTokenService tokenService;
 	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -36,19 +32,19 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
-		UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
+		User user = userService.getUserByUsername(loginRequest.getUsername());
 
-		if (Objects.nonNull(userDetails)) {
-			if (passEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
+		if (Objects.nonNull(user)) {
+			if (passEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
 
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-						userDetails, null);
+						user, null);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 				String myToken = tokenService.generateToken(loginRequest.getUsername());
 
 				HttpHeaders authorizationHeader = new HttpHeaders();
 				authorizationHeader.set("Authorization", myToken);
-				return ResponseEntity.status(HttpStatus.OK).headers(authorizationHeader).body(userDetails.getUser());
+				return ResponseEntity.status(HttpStatus.OK).headers(authorizationHeader).body(user);
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong password");
 			}
