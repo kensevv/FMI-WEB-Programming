@@ -77,20 +77,20 @@ const {dialogRef, onDialogHide, onDialogOK, onDialogCancel} = useDialogPluginCom
 defineEmits([...useDialogPluginComponent.emits])
 
 const contactItem = ref<Contact>({
-  address: <Address>{}, contactUuId: uuidv4().toString(), email: "", name: "", phoneNumbers: [], photo: undefined
+  address: <Address>{}, contactUuid: uuidv4().toString(), email: "", name: "", phoneNumbers: [], photo: undefined
 })
 
 const photoPreview = ref(null)
 watch(() => contactItem.value.photo, () => photoPreview.value = URL.createObjectURL(contactItem.value.photo))
 
 const addNewPhoneNumber = () => {
-  contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberUuId: uuidv4().toString(), type: undefined})
+  contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberUuid: uuidv4().toString(), type: undefined})
 }
 
 const submit = async () => onDialogOK(contactItem.value)
 
 const deletePhone = (phoneNumber: PhoneNumber) => {
-  contactItem.value.phoneNumbers = contactItem.value.phoneNumbers.filter(number => number.phoneNumberUuId != phoneNumber.phoneNumberUuId)
+  contactItem.value.phoneNumbers = contactItem.value.phoneNumbers.filter(number => number.phoneNumberUuid != phoneNumber.phoneNumberUuid)
 }
 
 </script>

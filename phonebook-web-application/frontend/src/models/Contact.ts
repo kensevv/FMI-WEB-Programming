@@ -2,7 +2,7 @@ import { Address } from "./Address"
 import { PhoneNumber } from "./PhoneNumber"
 
 export interface Contact {
-    contactUuId? : string
+    contactUuid? : string
     address : Address
     email? : string
     name : string

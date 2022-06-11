@@ -1,7 +1,7 @@
 import { PhoneType } from "./PhoneType"
 
 export interface PhoneNumber {
-    phoneNumberUuId : string
+    phoneNumberUuid : string
     phoneNumber : string
     type : PhoneType
 }

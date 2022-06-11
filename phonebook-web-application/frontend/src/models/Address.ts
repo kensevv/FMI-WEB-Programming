@@ -1,5 +1,5 @@
 export interface Address {
-    addressUuId : string
+    addressUuid : string
     country : string
     city?: string
     zipCode?: string
