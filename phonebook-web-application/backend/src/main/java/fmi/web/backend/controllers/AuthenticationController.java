@@ -6,7 +6,6 @@ import fmi.web.backend.payload.SignupRequest;
 import fmi.web.backend.security.MyTokenService;
 import fmi.web.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -29,8 +30,19 @@ public class AuthenticationController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
+
+	private Cookie generateCookie(String cookieName, String token) {
+		Cookie newCookie = new Cookie(cookieName, token);
+		newCookie.setPath("/");
+		newCookie.setHttpOnly(true);
+		newCookie.setSecure(true);
+		newCookie.setPath("/");
+		return newCookie;
+	}
+
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+		response.addCookie(generateCookie("authorization", "")); // reset cookie
 
 		User user = userService.getUserByUsername(loginRequest.getUsername());
 
@@ -42,9 +54,9 @@ public class AuthenticationController {
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 				String myToken = tokenService.generateToken(loginRequest.getUsername());
 
-				HttpHeaders authorizationHeader = new HttpHeaders();
-				authorizationHeader.set("Authorization", myToken);
-				return ResponseEntity.status(HttpStatus.OK).headers(authorizationHeader).body(user);
+				response.addCookie(generateCookie("authorization", myToken));
+
+				return ResponseEntity.status(HttpStatus.OK).body(user);
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong password");
 			}
