@@ -1,21 +1,30 @@
 package fmi.web.backend.services;
 
 import fmi.web.backend.entity.User;
+import fmi.web.backend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserService extends BasicService {
+public class UserService {
+	private final UserRepository userRepository;
+
+	@Autowired
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	public User getUserByUsername(String username) {
-		return em.createNamedQuery(User.getUserByUsername, User.class).setParameter("username", username).getResultList().stream().findFirst().orElse(null);
+		return userRepository.findUserByUsername(username);
 	}
 
 	public User getUserByEmail(String email) {
-		return em.createNamedQuery(User.getUserByEmail, User.class).setParameter("email", email).getResultList().stream().findFirst().orElse(null);
+		return userRepository.findUserByEmail(email);
 	}
 
 	public void createUser(User newUser) {
-		em.persist(newUser);
+		userRepository.save(newUser);
 	}
 }

@@ -25,7 +25,7 @@ public class ContactController {
 
     @GetMapping("{id}")
     public Contact getContact(@PathVariable String id) {
-        Contact contact = null;
+        Contact contact;
         try {
             contact = contactService.getContact(id);
         } catch (ContactNotFoundException e) {
@@ -46,7 +46,7 @@ public class ContactController {
 
     @PutMapping
     public Contact updateContact(@RequestBody @Valid Contact contact) {
-        Contact contactToUpdate = null;
+        Contact contactToUpdate;
         try {
             contactToUpdate = contactService.updateContact(contact);
         } catch (ContactNotPermitted e) {
