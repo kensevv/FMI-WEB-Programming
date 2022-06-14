@@ -2,5 +2,5 @@
 /.idea/
 /build/
 /phonebook-web-application.iml
-../.idea
 ./backend/src/main/resources/application.properties
+../.idea

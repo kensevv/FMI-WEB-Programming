@@ -6,11 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "phonebook_user")
-@NamedQuery(name = User.getUserByUsername, query = "SELECT u FROM User u WHERE u.username = :username")
-@NamedQuery(name = User.getUserByEmail, query = "SELECT u FROM User u WHERE u.email = :email")
 public class User {
-	public static final String getUserByUsername = "getUserByUsername";
-	public static final String getUserByEmail = "getUserByEmail";
 
 	@Id
 	private String userUuid;

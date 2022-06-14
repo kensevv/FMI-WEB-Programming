@@ -1,8 +1,5 @@
 package fmi.web.backend.security;
 
-import fmi.web.backend.services.BasicService;
-import fmi.web.backend.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,7 +12,7 @@ import java.util.Base64;
 
 
 @Service
-public class MyTokenService extends BasicService {
+public class MyTokenService {
 
 	private static final String SECURE_KEY = "KenanSecurity";
 	private static final String SPLITTER = "&@";
