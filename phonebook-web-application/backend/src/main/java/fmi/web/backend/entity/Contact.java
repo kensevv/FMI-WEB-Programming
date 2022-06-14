@@ -1,7 +1,8 @@
 package fmi.web.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 
 @Entity
@@ -17,13 +18,13 @@ public class Contact {
 
 	private String name;
 
-	@Lob
-	private Blob photo;
+	private byte[] photo;
 
-	@OneToMany(mappedBy = "contact")
+	@OneToMany(mappedBy = "contact", fetch = FetchType.EAGER)
 	private List<PhoneNumber> phoneNumbers;
 
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_uuid")
 	private User user;
 
@@ -31,7 +32,20 @@ public class Contact {
 
 	}
 
-	public Contact(String contactUuid, Address address, String email, String name, Blob photo, List<PhoneNumber> phoneNumbers, User user) {
+	public Contact(String contactUuid) {
+		this.contactUuid = contactUuid;
+	}
+
+	public Contact(String contactUuid, Address address, String email, String name, byte[] photo, List<PhoneNumber> phoneNumbers) {
+		this.contactUuid = contactUuid;
+		this.address = address;
+		this.email = email;
+		this.name = name;
+		this.photo = photo;
+		this.phoneNumbers = phoneNumbers;
+	}
+
+	public Contact(String contactUuid, Address address, String email, String name, byte[] photo, List<PhoneNumber> phoneNumbers, User user) {
 		this.contactUuid = contactUuid;
 		this.address = address;
 		this.email = email;
@@ -41,7 +55,6 @@ public class Contact {
 		this.user = user;
 	}
 
-	// setters and getters
 	public String getContactUuid() {
 		return contactUuid;
 	}
@@ -74,11 +87,11 @@ public class Contact {
 		this.name = name;
 	}
 
-	public Blob getPhoto() {
+	public byte[] getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(Blob photo) {
+	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
 
@@ -97,5 +110,4 @@ public class Contact {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 }

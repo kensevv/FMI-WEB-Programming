@@ -1,11 +1,11 @@
-import { Address } from "./Address"
-import { PhoneNumber } from "./PhoneNumber"
+import {Address} from "./Address"
+import {PhoneNumber} from "./PhoneNumber"
 
 export interface Contact {
-    contactUuid? : string
-    address : Address
-    email? : string
-    name : string
-    photo? : Blob
-    phoneNumbers : PhoneNumber[]
+    contactUuid?: string
+    address: Address
+    email?: string
+    name: string
+    photo?: string
+    phoneNumbers: PhoneNumber[]
 }

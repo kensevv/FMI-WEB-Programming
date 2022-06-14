@@ -56,7 +56,7 @@
     </q-header>
 
     <q-page-container>
-      <contacts-table :contacts="currentUser.contacts"/>
+      <ContactsTable :contacts="currentUser.contacts"/>
     </q-page-container>
 
     <q-footer elevated class="bg-grey-7 text-white">
