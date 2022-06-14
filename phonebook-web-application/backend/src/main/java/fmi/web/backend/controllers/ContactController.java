@@ -1,11 +1,13 @@
 package fmi.web.backend.controllers;
 
 import fmi.web.backend.entity.Contact;
-import fmi.web.backend.entity.User;
+import fmi.web.backend.exceptions.ContactNotFoundException;
+import fmi.web.backend.exceptions.ContactNotPermitted;
 import fmi.web.backend.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,19 +25,19 @@ public class ContactController {
 
     @GetMapping("{id}")
     public Contact getContact(@PathVariable String id) {
-        User currentUser = getCurrentUser();
-        return currentUser.getContactList()
-                .stream()
-                .filter(c -> c.getContactUuid().equals(id))
-                .findFirst()
-                .orElse(null);
+        Contact contact = null;
+        try {
+            contact = contactService.getContact(id);
+        } catch (ContactNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found", e);
+        }
+        return contact;
     }
 
     @GetMapping
     public List<Contact> getAllContacts() {
-        return getCurrentUser().getContactList();
+        return contactService.getAllContacts();
     }
-
 
     @PostMapping
     public Contact createContact(@RequestBody @Valid Contact contact) {
@@ -44,17 +46,21 @@ public class ContactController {
 
     @PutMapping
     public Contact updateContact(@RequestBody @Valid Contact contact) {
-        return contactService.updateContact(contact);
+        Contact contactToUpdate = null;
+        try {
+            contactToUpdate = contactService.updateContact(contact);
+        } catch (ContactNotPermitted e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contact not accessible by current user", e);
+        }
+        return contactToUpdate;
     }
 
     @DeleteMapping("{id}")
     public void deleteContact(@PathVariable String id) {
-        contactService.deleteContact(id);
+        try {
+            contactService.deleteContact(id);
+        } catch (ContactNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found", e);
+        }
     }
-
-    private User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
-
-
 }
