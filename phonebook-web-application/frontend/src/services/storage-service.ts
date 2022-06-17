@@ -1,18 +1,18 @@
 import {User} from "../models/User";
 import {ref} from "vue";
-import {useLocalStorage} from "@vueuse/core";
+import {useSessionStorage} from "@vueuse/core";
 
 
 export const storeUser = (user: User) => {
-    useLocalStorage('phonebookUser', user);
+    useSessionStorage('phonebookUser', user);
     currentUser.value = user
 }
 export const clearUserStorage = () => {
     currentUser.value = null
-    localStorage.clear();
+    sessionStorage.clear();
 }
-export const getCurrentUser = (): User => JSON.parse(localStorage.getItem('phonebookUser'))
-export const userIsLoggedIn = (): boolean => localStorage.getItem('phonebookUser') != null
+export const getCurrentUser = (): User => JSON.parse(sessionStorage.getItem('phonebookUser'))
+export const userIsLoggedIn = (): boolean => sessionStorage.getItem('phonebookUser') != null
 
 
 export const currentUser = ref<User | null>(getCurrentUser())
