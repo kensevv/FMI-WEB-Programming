@@ -9,11 +9,14 @@
 
       <div class="col">
         <q-table
+            row-key="contactUuid"
             :filter="filter"
             :columns="columns"
             :pagination="{rowsPerPage: 0}"
             :rows="contacts"
             dense
+            selection="multiple"
+            v-model:selected="selected"
             hide-pagination
             :grid="gridMode"
             style="height: fit-content"
@@ -24,6 +27,14 @@
               <img v-if="props.value" alt="Avatar" :src="props.value" class="image-preview">
               <q-avatar v-else color="primary" text-color="white" icon="person"/>
             </q-td>
+          </template>
+          <template v-slot:bottom>
+            <q-btn :disable="selected.length <= 1"
+                   flat
+                   color="primary"
+                   icon="plagiarism"
+                   label="MERGE SELECTED CONTACTS"
+                   @click="mergeSelectedContacts"/>
           </template>
           <template v-if="!gridMode" v-slot:body-cell-edit="props">
             <q-td>
@@ -110,6 +121,7 @@ import {
   getCurrentUserContacts,
   updateContact
 } from "../services/request-service";
+import {v4 as uuidv4} from "uuid";
 
 const quasar = useQuasar()
 
@@ -147,9 +159,37 @@ const editContact = (contactToEdit: Contact) => {
   })
 }
 
+
 const filter = ref('')
 
 const gridMode = ref(true)
+
+const selected = ref<Contact[]>([])
+
+const mergeSelectedContacts = () => {
+  const initialContact: Contact = selected.value[0]
+  quasar.dialog({
+    component: EditContactDialog,
+    componentProps: {
+      'contact': {
+        ...initialContact,
+        contactUuid: uuidv4().toString(),
+        name: '',
+        email: '',
+        address: {...initialContact.address, addressUuid: uuidv4().toString()},
+        phoneNumbers: selected.value.map(contact => contact.phoneNumbers).flat().map(phoneNumber => ({
+          ...phoneNumber,
+          phoneNumberUuid: uuidv4().toString()
+        }))
+      },
+    }
+  }).onOk(async (editedContact: Contact) => {
+    await addNewContactToCurrentUser(editedContact)
+    selected.value.forEach(async contact => await deleteContactById(contact.contactUuid))
+    contacts.value = contacts.value.filter(contact => !selected.value.map(con => con.contactUuid).includes(contact.contactUuid))
+    contacts.value.push(editedContact)
+  })
+}
 
 const columns = [
   {

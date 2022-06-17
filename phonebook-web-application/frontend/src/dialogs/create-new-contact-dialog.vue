@@ -87,7 +87,7 @@ const contactItem = ref<Contact>({
 })
 
 const photoItem = ref(null)
-const photoPreview = ref(null)
+
 watch(() => photoItem.value, async () => contactItem.value.photo = await toBase64(photoItem.value))
 
 const addNewPhoneNumber = () => {
