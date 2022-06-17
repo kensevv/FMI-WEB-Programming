@@ -81,9 +81,10 @@ const props = defineProps<{
 }>();
 
 const contactItem = ref<Contact>({...props.contact})
+
 const photoItem = ref(null)
 
-watch(() => photoItem.value, () => contactItem.value.photo = toBase64(photoItem.value))
+watch(() => photoItem.value, async () => contactItem.value.photo = await toBase64(photoItem.value))
 
 const addNewPhoneNumber = () => {
   contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberUuid: uuidv4().toString(), type: undefined})
