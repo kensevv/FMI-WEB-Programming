@@ -1,5 +1,7 @@
 package fmi.web.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +15,8 @@ public class PhoneNumber {
 	@Enumerated(EnumType.STRING)
 	private PhoneType type;
 
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "contact_uuid")
 	private Contact contact;
 

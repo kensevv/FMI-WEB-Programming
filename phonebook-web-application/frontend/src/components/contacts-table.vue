@@ -6,22 +6,22 @@
         <q-toggle v-model="gridMode"></q-toggle>
         <span>Grid</span>
       </div>
+
       <div class="col">
         <q-table
             :filter="filter"
             :columns="columns"
             :pagination="{rowsPerPage: 0}"
-            :rows="props.contacts"
+            :rows="contacts"
             dense
             hide-pagination
             :grid="gridMode"
-            hide-header
             style="height: fit-content"
             virtual-scroll
         >
           <template v-if="!gridMode" v-slot:body-cell-photo="props">
             <q-td>
-              <img v-if="props.value" alt="Avatar" :src="getAvatarPreview(props.value)" class="image-preview">
+              <img v-if="props.value" alt="Avatar" :src="props.value" class="image-preview">
               <q-avatar v-else color="primary" text-color="white" icon="person"/>
             </q-td>
           </template>
@@ -50,7 +50,7 @@
                 <q-card-section>
                   <div class="row">
                     <img v-if="props.cols.find(col => col.name === 'photo').value"
-                         :src="getAvatarPreview(props.cols.find(col => col.name === 'photo').value)" alt="Avatar"
+                         :src="props.cols.find(col => col.name === 'photo').value" alt="Avatar"
                          class="image-preview">
                     <q-avatar v-else color="primary" icon="person" text-color="white"/>
                     <q-space/>
@@ -100,29 +100,32 @@
 <script lang="ts" setup>
 import {Contact} from "../models/Contact";
 import {Address} from "../models/Address";
-import {currentUser} from "../services/storage-service";
 import {useQuasar} from "quasar";
 import CreateNewContactDialog from "../dialogs/create-new-contact-dialog.vue";
 import EditContactDialog from "../dialogs/edit-contact-dialog.vue";
 import {ref} from "vue";
+import {
+  addNewContactToCurrentUser,
+  deleteContactById,
+  getCurrentUserContacts,
+  updateContact
+} from "../services/request-service";
 
 const quasar = useQuasar()
 
-const props = defineProps<{
-  contacts: Contact[]
-}>()
+const contacts = ref(await getCurrentUserContacts())
 
-const deleteContact = (contactToDelete: Contact) =>
-    currentUser.value.contacts = currentUser.value?.contacts?.filter(contact => contact.contactUuid != contactToDelete.contactUuid)
+const deleteContact = async (contactToDelete: Contact) => {
+  await deleteContactById(contactToDelete.contactUuid)
+  contacts.value = contacts.value.filter(contact => contact.contactUuid != contactToDelete.contactUuid);
+}
 
 const addNewContact = () => {
   quasar.dialog({
     component: CreateNewContactDialog,
   }).onOk(async (newContact: Contact) => {
-    if(!currentUser.value.contacts) {
-      currentUser.value.contacts = []
-    }
-    currentUser.value.contacts.push(newContact)
+    await addNewContactToCurrentUser(newContact)
+    contacts.value.push(newContact)
   })
 
 }
@@ -133,7 +136,8 @@ const editContact = (contactToEdit: Contact) => {
       'contact': {...contactToEdit},
     }
   }).onOk(async (editedContact: Contact) => {
-    currentUser.value.contacts = currentUser.value.contacts.map(contact => {
+    await updateContact(editedContact)
+    contacts.value = contacts.value.map(contact => {
       if (contact.contactUuid == editedContact.contactUuid) {
         return editedContact
       } else {
@@ -142,8 +146,6 @@ const editContact = (contactToEdit: Contact) => {
     })
   })
 }
-
-const getAvatarPreview = (photo: File) => URL.createObjectURL(photo)
 
 const filter = ref('')
 

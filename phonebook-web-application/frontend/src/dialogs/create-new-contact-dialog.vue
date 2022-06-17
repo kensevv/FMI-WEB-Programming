@@ -8,11 +8,11 @@
       <q-card-section>
         <q-form class="q-gutter-md" @submit="submit">
 
-          <q-file accept=".jpg, image/*" filled bottom-slots v-model="contactItem.photo" label="Photo" counter
+          <q-file accept=".jpg, image/*" filled bottom-slots v-model="photoItem" label="Photo" counter
                   max-files="1">
             <template v-slot:before>
               <q-icon v-if="!contactItem.photo" name="person" size="lg"></q-icon>
-              <img v-else alt="Avatar" :src="photoPreview" class="image-preview">
+              <img v-else alt="Avatar" :src="contactItem.photo" class="image-preview">
             </template>
             <template v-slot:append>
               <q-icon v-if="contactItem.photo !== null" name="close" @click.stop="contactItem.photo = null"
@@ -70,18 +70,25 @@ import {Contact} from "../models/Contact";
 import PhoneNumberComponent from "../components/phone-number-component.vue";
 import {Address} from "../models/Address";
 import {PhoneNumber} from "../models/PhoneNumber";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {toBase64} from "../services/utils";
 
 const {dialogRef, onDialogHide, onDialogOK, onDialogCancel} = useDialogPluginComponent()
 
 defineEmits([...useDialogPluginComponent.emits])
 
 const contactItem = ref<Contact>({
-  address: <Address>{}, contactUuid: uuidv4().toString(), email: "", name: "", phoneNumbers: [], photo: undefined
+  address: <Address>{addressUuid: uuidv4().toString()},
+  contactUuid: uuidv4().toString(),
+  email: "",
+  name: "",
+  phoneNumbers: [],
+  photo: undefined
 })
 
+const photoItem = ref(null)
 const photoPreview = ref(null)
-watch(() => contactItem.value.photo, () => photoPreview.value = URL.createObjectURL(contactItem.value.photo))
+watch(() => photoItem.value, async () => contactItem.value.photo = await toBase64(photoItem.value))
 
 const addNewPhoneNumber = () => {
   contactItem.value.phoneNumbers.push({phoneNumber: null, phoneNumberUuid: uuidv4().toString(), type: undefined})

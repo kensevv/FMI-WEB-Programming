@@ -11,9 +11,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Filter(name = "TokenFilter")
 public class MyTokenFilter extends OncePerRequestFilter {
@@ -26,7 +28,10 @@ public class MyTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		try {
-			String myToken = request.getHeader("Authorization");
+			String myToken = "";
+			if (request.getCookies() != null) {
+				myToken = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("authorization")).findFirst().orElse(new Cookie("authorization", "")).getValue();
+			}
 
 			if (tokenService.validateToken(myToken)) {
 				String username = tokenService.extractUsernameFromToken(myToken);

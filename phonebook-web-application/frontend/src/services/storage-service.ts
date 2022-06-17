@@ -2,8 +2,6 @@ import {User} from "../models/User";
 import {ref} from "vue";
 import {useLocalStorage} from "@vueuse/core";
 
-export const currentUser = ref<User | null>(null)
-export const toRegister = ref<boolean>(false)
 
 export const storeUser = (user: User) => {
     useLocalStorage('user', user);
@@ -15,3 +13,7 @@ export const clearUserStorage = () => {
 }
 export const getCurrentUser = (): User => JSON.parse(localStorage.getItem('user'))
 export const userIsLoggedIn = (): boolean => localStorage.getItem('user') != null
+
+
+export const currentUser = ref<User | null>(getCurrentUser())
+export const toRegister = ref<boolean>(false)
